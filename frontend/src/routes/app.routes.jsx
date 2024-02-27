@@ -6,7 +6,7 @@ import Login from "../pages/Login"
 export function AppRoutes(){
     return (
         <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/auth/login" element={<Login />} />
             <Route path="/tasks" element={<Home />} />
         </Routes>
     )

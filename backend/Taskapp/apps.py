@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AuthappConfig(AppConfig):
+class TaskappConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'Authapp'
+    name = 'Taskapp'
