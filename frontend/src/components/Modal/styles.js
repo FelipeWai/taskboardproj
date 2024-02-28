@@ -32,6 +32,13 @@ export const Container = styled.dialog`
     }
   }
 
+  .icons{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 0rem;
+  }
+
   .status{
     display: flex;
     flex-direction: column;
@@ -93,4 +100,7 @@ export const Container = styled.dialog`
     height: 80%;
     margin: auto;
   }
+  @media (max-width: 400px) {
+     justify-content: center;
+    }
 `;

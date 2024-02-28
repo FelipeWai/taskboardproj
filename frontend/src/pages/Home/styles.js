@@ -3,16 +3,18 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: flex-start; 
   align-items: center; 
-  height: 50vh; 
-  > div {
+  min-height: 100vh; 
+  margin-top: 5rem;
+
+  .wrapper {
     display: flex;
     align-items: start;
     gap: 3rem;
     margin-bottom: 4rem;
 
-    > div {
+    .titleWrapper {
       display: flex;
       flex-direction: column;
       align-items: start;
@@ -20,6 +22,7 @@ export const Container = styled.div`
     }
     
   }
+  
   @media(max-width:350px){
       > div {
     gap: 1rem;

@@ -1,15 +1,8 @@
-import React from 'react'
 import {Container} from "./styles"
 
-const Status = ({imgStatus, altStatus, statusText, inProgress, completed, wontdo}) => {
-
-  
-  // function handleClick(){
-      
-  // }
-
+const Status = ({imgStatus, altStatus, statusText, inProgress, completed, wontdo, onClick, isActive}) => {
   return (
-    <Container>
+    <Container onClick={onClick} className={isActive ? "border" : ""}>
       
         <div className={`${inProgress ? "orange" : ""} ${completed ? "green" : ""} ${wontdo ? "red" : ""}`}>
         <img src={imgStatus} alt={altStatus}/>

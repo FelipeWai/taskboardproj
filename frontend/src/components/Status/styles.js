@@ -10,6 +10,10 @@ export const Container = styled.div`
   padding: 0.2rem;
   cursor: pointer;
 
+  &.border{
+    border: 2px solid ${({ theme }) => theme.COLORS.BORDER_FOCUS};
+  }
+
   h3 {
     font-weight: 600;
     font-size: 1.6rem;
@@ -47,6 +51,12 @@ export const Container = styled.div`
       h3 {
         font-weight: 600;
         font-size: 1.2rem;
+      }
+    }
+    @media (max-width: 345px) {
+      h3 {
+        font-weight: 600;
+        font-size: 1rem;
       }
     }
 `;
