@@ -76,6 +76,10 @@ const Login = () => {
       <Header btnHeader="GitHub" link="/" />
 
       <LoginForm>
+    <Container>
+      <Header btnHeader="GitHub" link="/" />
+
+      <LoginForm>
         <div>
           <div>
             <h2>Fazer login</h2>
