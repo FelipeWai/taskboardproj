@@ -1,27 +1,27 @@
 import React, { useState } from "react";
-import { Container, LinksWrapper, LoginForm } from "./styles";
-import caneta from "../../assets/Edit_duotone.svg";
+import { Container, CreateAccountForm } from "./styles";
 import Header from "../../components/Header";
-import { Link } from "react-router-dom";
-import InputLogin from "../../components/InputLogin";
+import caneta from "../../assets/Edit_duotone.svg";
+import InputCreateAccount from "../../components/InputCreateAccount";
 
-const Login = () => {
+const Registry = () => {
   const [values, setValues] = useState({
-    name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [touched, setTouched] = useState({
-    name: false,
     email: false,
     password: false,
+    confirmPassword: false,
   });
 
   const [validity, setValidity] = useState({
     name: true,
     email: true,
     password: true,
+    confirmPassword: true,
   });
 
   const inputs = [
@@ -43,6 +43,15 @@ const Login = () => {
         "Senha inválida. Deve conter no mínimo 8 caracteres, pelo menos uma letra maiúscula, um número e um símbolo.",
       label: "Senha",
       pattern: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+|~=\`{}\[\]:;"'<>,.?\\/])[a-zA-Z0-9!@#$%^&*()_+|~=\`{}\[\]:;"'<>,.?\\]{8,}$/,
+      required: true,
+    },
+    {
+      id: 3,
+      name: "confirmPassword",
+      type: "password",
+      errorMessage: "As senhas não coincidem!",
+      label: "Confirmar senha",
+      pattern: values.password,
       required: true,
     },
   ];
@@ -68,27 +77,30 @@ const Login = () => {
         .find((input) => input.name === name)
         .pattern.test(values[name]);
       setValidity({ ...validity, [name]: isValid });
+    } else if (name === "confirmPassword") {
+      const isValid = values.confirmPassword === values.password;
+      setValidity({ ...validity, [name]: isValid });
     }
   };
 
   return (
     <Container>
-      <Header btnHeader="GitHub" link="/" />
-      <LoginForm>
+      <Header btnHeader="Login" link="/auth/login" />
+      <CreateAccountForm>
         <div>
           <div>
-            <h2>Fazer login</h2>
+            <h2>Criar uma conta</h2>
             <img src={caneta} alt="Ilustração de uma caneta preta" />
           </div>
           <p>
-            Bem-vindo de volta! Para aceder à sua conta Task Board, por favor
-            inicie sessão abaixo.
+            Registre-se para acessar as funcionalidades do Task Board e otimize
+            sua produtividade!
           </p>
         </div>
 
-        <form action="/" method="post">
+        <form action="/" method="POST">
           {inputs.map((input) => (
-            <InputLogin
+            <InputCreateAccount
               key={input.id}
               {...input}
               onChange={onChange}
@@ -99,17 +111,11 @@ const Login = () => {
               required={input.required}
             />
           ))}
-          <button type="submit">LOGAR</button>
+          <button type="submit">CRIAR CONTA</button>
         </form>
-
-        <LinksWrapper>
-          <p>
-            Não tem uma conta? <Link to="/auth/signup">Crie agora</Link>
-          </p>
-        </LinksWrapper>
-      </LoginForm>
+      </CreateAccountForm>
     </Container>
   );
 };
 
-export default Login;
+export default Registry;

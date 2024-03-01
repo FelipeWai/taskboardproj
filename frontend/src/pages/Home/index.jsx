@@ -4,6 +4,7 @@ import { Container, Main } from "./styles"
 
 import hero from "../../assets/home-hero.png"
 import { ArrowRight } from 'lucide-react';
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -22,10 +23,10 @@ const Home = () => {
             <img src={hero}/>
         </div>
 
-        <a href="/">
+        <Link to="/auth/signup">
             Use o Task Board
             <ArrowRight />
-        </a>
+        </Link>
 
       </Main>
     </Container>
