@@ -6,6 +6,11 @@ export const Container = styled.label`
   gap: 0.5rem;
   flex-direction: column;
 
+  span{
+    font-size: 1.2rem;
+    color: red;
+  }
+
   input{
       background-color: #EBECEC;
       border: 1px solid #E0E0DD;
