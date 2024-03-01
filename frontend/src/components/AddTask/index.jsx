@@ -27,7 +27,7 @@ const AddTask = ({onAdd}) => {
       </Modal>
 
       <Container onClick={OpenAddTask}>
-        <div>
+        <div className="iconPlus">
           <img src={add} alt="icone com um mais desenhado" />
         </div>
         <h3>Add new task</h3>

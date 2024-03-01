@@ -1,91 +1,73 @@
 import styled from "styled-components";
 
-export const Main = styled.main`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
-export const Container = styled.div`
-  display: flex;
-  width: 80rem;
-  height: 50rem;
-  align-items: center;
-  justify-content: center;
-  gap: 10rem;
+export const Container = styled.div``;
+
+export const LoginForm = styled.main`
+  position: fixed;
+  width: 50rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border: 1px solid black;
-  border-radius: 0.5rem;
-  background-color: white;
-  padding: 2rem;
-
-  .FormDetails {
+  border-radius: .5rem;
+  padding: 3rem;
+  > div {
     display: flex;
-    width: 50%;
     flex-direction: column;
+    text-align: center;
+    margin-bottom: 2rem;
     align-items: center;
-
-    form {
-      margin-bottom: 2rem;
+    justify-content: center;
+    >div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
     }
+  }
 
-    h1 {
-      margin-bottom: 2rem;
-    }
+  form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 
-    input {
-      width: 100%;
-      height: 5.6rem;
-      padding: 2rem;
-      margin-bottom: 1.5rem;
-
-      background-color: #e6e6e6;
-      border: 0;
-      border-radius: 5rem;
-    }
-
-    button {
-      background-color: #6fb556;
+    button{
       width: 100%;
       border: none;
-      padding: 2rem;
-      border-radius: 5rem;
+      background-color: #2383E2;
+      font-weight: 500;
       color: white;
-      font-weight: 700;
+      height: 4rem;
+      border-radius: .5rem;
+      margin-top: 1.5rem;
       cursor: pointer;
-      margin-top: 1rem;
 
-      &:hover {
-        background-color: #4a8a33;
+      &:hover{
+        background-color: #1371CD;
       }
     }
   }
 
-  .links {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-
-    a {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      cursor: pointer;
-    }
-  }
-
-  @media (max-width: 800px) {
-    flex-direction: column;
-    gap: 4rem;
-    height: 80vh;
+  @media(max-width:500px){
+    width: 100%;
+    margin-top: 1rem;
     border-radius: 0rem;
+    border: 0px;
   }
 
-  @media (max-width: 560px) {
-    height: 100vh;
-    gap: 1rem;
-    .FormDetails {
-      width: 100%;
+  @media(max-width:360px){
+   >div{
+    p{
+      font-size: 1.4rem;
     }
+   }
   }
 `;
+
+export const LinksWrapper = styled.div`
+margin-top: 2rem;
+  a{
+    color: #27272A;
+  }
+`

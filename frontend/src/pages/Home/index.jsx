@@ -1,39 +1,33 @@
-import React, { useState } from "react";
-import { Container } from "./styles";
-import AddTask from "../../components/AddTask";
-import logo from "../../assets/Logo.svg";
-import edit from "../../assets/Edit_duotone.svg";
-import NewTask from "../../components/NewTask";
+import React from "react";
+import Header from "../../components/Header"
+import { Container, Main } from "./styles"
+
+import hero from "../../assets/home-hero.png"
+import { ArrowRight } from 'lucide-react';
 
 const Home = () => {
-
-  const [tasks, setTasks] = useState([]);
-
-  const handleAddTask = (newTask) => {
-    setTasks([...tasks, newTask]);
-  };
-
   return (
     <Container>
-      <div className="wrapper">
-        <img src={logo} alt="Logo" />
-        <div className="titleWrapper">
-          <h1>My Task Board</h1>
-          <span>Tasks to keep organised</span>
-        </div>
-        <img src={edit} alt="Ilustração de uma caneta preta" />
-      </div>
+      <Header btnHeader="Fazer login" link="/auth/login"/>
+      <Main>
+        <h1>
+          Facilitando sua vida com uma
+          <br /> <span>gestão simples</span> de tarefas
+        </h1>
+        <h2>
+        Escreva tarefas, organize conhecimento e gerencie seus afazeres.
+        </h2>
 
-      {tasks.map((task, index) => (
-        <NewTask
-          key={index}
-          title={task.title}
-          description={task.description}
-          status={task.status}
-        />
-      ))}
-      <AddTask onAdd={handleAddTask}/>
-      
+        <div>
+            <img src={hero}/>
+        </div>
+
+        <a href="/">
+            Use o Task Board
+            <ArrowRight />
+        </a>
+
+      </Main>
     </Container>
   );
 };

@@ -12,7 +12,7 @@ export const Container = styled.button`
   padding: 4rem 3rem;
   cursor: pointer;
 
-  >div{
+  .iconPlus{
     display: flex;
     justify-content: center;
     align-items: center;

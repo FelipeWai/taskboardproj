@@ -26,7 +26,6 @@ export const Container = styled.div`
     width: 4rem;
     height: 4rem;
     border-radius: 1rem;
-    background-color: red;
 
     &.orange {
       background-color: ${({ theme }) => theme.COLORS.BG_ICON_PROGRESS};
