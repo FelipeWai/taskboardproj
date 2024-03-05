@@ -1,88 +1,38 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Container, CreateAccountForm } from "./styles";
 import Header from "../../components/Header";
 import caneta from "../../assets/Edit_duotone.svg";
-import InputCreateAccount from "../../components/InputCreateAccount";
+import Validation from "./Validation"
 
 const Registry = () => {
+
+  const nevigate = useNavigate();
+
   const [values, setValues] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
 
-  const [touched, setTouched] = useState({
-    email: false,
-    password: false,
-    confirmPassword: false,
-  });
+  const [errors, setErrors] = useState({})
 
-  const [validity, setValidity] = useState({
-    name: true,
-    email: true,
-    password: true,
-    confirmPassword: true,
-  });
+  function handleInput(event){
+    const newObj = {...values, [event.target.name]: event.target.value}
+    setValues(newObj)
+  }
 
-  const inputs = [
-    {
-      id: 1,
-      name: "email",
-      type: "email",
-      errorMessage:
-        "E-mail inválido. Por favor, insira um endereço de email válido.",
-      label: "E-mail",
-      pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9\.-]+\.[a-zA-Z]{2,}$/i,
-      required: true,
-    },
-    {
-      id: 2,
-      name: "password",
-      type: "password",
-      errorMessage:
-        "Senha inválida. Deve conter no mínimo 8 caracteres, pelo menos uma letra maiúscula, um número e um símbolo.",
-      label: "Senha",
-      pattern: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+|~=\`{}\[\]:;"'<>,.?\\/])[a-zA-Z0-9!@#$%^&*()_+|~=\`{}\[\]:;"'<>,.?\\]{8,}$/,
-      required: true,
-    },
-    {
-      id: 3,
-      name: "confirmPassword",
-      type: "password",
-      errorMessage: "As senhas não coincidem!",
-      label: "Confirmar senha",
-      pattern: values.password,
-      required: true,
-    },
-  ];
-
-  const onChange = (event) => {
-    const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
-
-    if (name === "email" || name === "password") {
-      const isValid = inputs
-        .find((input) => input.name === name)
-        .pattern.test(value);
-      setValidity({ ...validity, [name]: isValid });
-    } else {
-      setValidity({ ...validity, [name]: true });
+  function handleValidation(event){
+    event.preventDefault();
+  
+    const validationErrors = Validation(values);
+    setErrors(validationErrors);
+  
+    if (Object.keys(validationErrors).length === 0) {
+      nevigate("/auth/login");
     }
-  };
-
-  const onBlur = (name) => {
-    setTouched({ ...touched, [name]: true });
-    if (name === "email" || name === "password") {
-      const isValid = inputs
-        .find((input) => input.name === name)
-        .pattern.test(values[name]);
-      setValidity({ ...validity, [name]: isValid });
-    } else if (name === "confirmPassword") {
-      const isValid = values.confirmPassword === values.password;
-      setValidity({ ...validity, [name]: isValid });
-    }
-  };
-
+  }
+ 
   return (
     <Container>
       <Header btnHeader="Login" link="/auth/login" />
@@ -98,19 +48,18 @@ const Registry = () => {
           </p>
         </div>
 
-        <form action="/" method="POST">
-          {inputs.map((input) => (
-            <InputCreateAccount
-              key={input.id}
-              {...input}
-              onChange={onChange}
-              value={values[input.name]}
-              onBlur={() => onBlur(input.name)}
-              isValid={validity[input.name]}
-              touched={touched[input.name]}
-              required={input.required}
-            />
-          ))}
+        <form onSubmit={handleValidation} method="POST">
+        <label>E-mail</label>
+          <input type="email" name="email" onChange={handleInput}  autoComplete="email"/>
+          {errors.email && <span>{errors.email}</span>}
+
+          <label>Senha</label>
+          <input type="password" name="password" onChange={handleInput} autoComplete="current-password"/>
+          {errors.password && <span>{errors.password}</span>}
+
+          <label>Confirmar senha</label>
+          <input type="password" name="confirmPassword" onChange={handleInput} autoComplete="current-password"/>
+          {errors.confirmPassword && <span>{errors.confirmPassword}</span>}
           <button type="submit">CRIAR CONTA</button>
         </form>
       </CreateAccountForm>
