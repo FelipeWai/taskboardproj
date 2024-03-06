@@ -1,8 +1,16 @@
 export default function Validation(values) {
     const errors = {}
 
+    const username_pattern = /^[a-zA-Z]{3,}$/
     const email_pattern =/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|com\.br)$/;
     const password_pattern = /(?=^.{8,}$)((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+
+    if (values.username === "") {
+        errors.username = "Nome de usuário é obrigatório";
+    } else if (!username_pattern.test(values.username)) {
+        console.log(values.username)
+        errors.username = "Username inválido. Deve conter no mínimo 3 caracteres.";
+    }
 
     if (values.email === "") {
         errors.email = "E-mail é obrigatório";

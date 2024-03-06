@@ -49,7 +49,7 @@ const Login = () => {
           </p>
         </div>
 
-        <form onSubmit={handleValidation} method="POST">
+        <form onSubmit={handleValidation}  action="." method="POST">
         <label>E-mail</label>
         <input type="email" name="email" onChange={handleInput}  autoComplete="email"/>
           {errors.email && <span>{errors.email}</span>}

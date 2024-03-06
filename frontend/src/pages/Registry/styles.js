@@ -3,9 +3,9 @@ import styled from "styled-components";
 export const Container = styled.div``
 
 export const CreateAccountForm = styled.div`
-     position: fixed;
+  position: fixed;
   width: 50rem;
-  top: 50%;
+  top: 52%;
   left: 50%;
   transform: translate(-50%, -50%);
   border: 1px solid black;
