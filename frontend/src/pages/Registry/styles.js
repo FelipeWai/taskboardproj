@@ -46,9 +46,16 @@ export const CreateAccountForm = styled.div`
       border-radius:.5rem;
       font-size: 1.6rem;
     }
+    .duplicate-email{
+        border-color: red;
+      }
 
     button{
       width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-content: center;
       border: none;
       background-color: #2383E2;
       font-weight: 500;

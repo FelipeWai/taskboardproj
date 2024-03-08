@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, CreateAccountForm } from "./styles";
 import Header from "../../components/Header";
+import Loader from "../../components/Loader"
 import caneta from "../../assets/Edit_duotone.svg";
 import Validation from "./Validation";
 
 const Registry = () => {
-  const nevigate = useNavigate();
+  const navigate = useNavigate();
 
   const [values, setValues] = useState({
     username: "",
@@ -22,14 +23,61 @@ const Registry = () => {
     setValues(newObj);
   }
 
+  const [isEmailDuplicate, setIsEmailDuplicate] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   function handleValidation(event) {
     event.preventDefault();
+    setIsLoading(true);
 
     const validationErrors = Validation(values);
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      nevigate("/auth/signup/");
+      fetch("/auth/gettoken", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Erro ao obter token");
+          }
+        })
+        .then((data) => {
+          const csrfToken = data.csrfToken;
+
+          fetch("/auth/signup/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrfToken,
+            },
+            body: JSON.stringify(values),
+          })
+            .then((response) => {
+              if (response.ok) {
+                navigate("/auth/login");
+              } else {
+                setIsEmailDuplicate(true);
+                throw new Error("Erro ao criar conta");
+              }
+            })
+            .catch((error) => {
+              console.error("Erro ao criar conta:", error);
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
+        })
+        .catch((error) => {
+          console.error("Erro ao obter token:", error);
+        });
+    }
+    else {
+      setIsLoading(false); 
     }
   }
 
@@ -48,7 +96,7 @@ const Registry = () => {
           </p>
         </div>
 
-        <form onSubmit={handleValidation} action="." method="POST">
+        <form onSubmit={handleValidation} method="POST">
           <label>Username</label>
           <input
             type="text"
@@ -64,6 +112,7 @@ const Registry = () => {
             name="email"
             onChange={handleInput}
             autoComplete="email"
+            className={isEmailDuplicate ? "duplicate-email" : ""}
           />
           {errors.email && <span>{errors.email}</span>}
 
@@ -84,7 +133,7 @@ const Registry = () => {
             autoComplete="current-password"
           />
           {errors.confirmPassword && <span>{errors.confirmPassword}</span>}
-          <button type="submit">CRIAR CONTA</button>
+          <button type="submit" disabled={isLoading}>{isLoading ? <Loader/> : "CRIAR CONTA"}</button>
         </form>
       </CreateAccountForm>
     </Container>
