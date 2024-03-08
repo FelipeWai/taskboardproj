@@ -1,40 +1,48 @@
 from django.shortcuts import render
-from django.urls import reverse
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from werkzeug.security import generate_password_hash, check_password_hash
+from django.http import HttpResponse, JsonResponse
+from werkzeug.security import generate_password_hash
+from django.middleware.csrf import get_token
+import json
+import re
 
 from .models import Users
 
 # Create your views here.
+def get_csrf_token(request):
+    token = get_token(request)
+    return JsonResponse({'csrfToken': token}, status=200)
+
 def login(request):
     if request.method == 'POST':
-        return HttpResponse('eieiei')
-    return render(request, 'index.html')
+        return HttpResponse('POST NO LOGIN')
+    return HttpResponse('GET NO LOGIN')
 
 def signup(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        confirmPassword = request.POST.get('confirmPassword')
-        
-        # Verifique se todos os campos foram preenchidos
-        if not all([username, email, password, confirmPassword]):
-            return JsonResponse({'error': 'Todos os campos são obrigatórios'})
+        data = json.loads(request.body)
+        username = data.get('username')
+        email = data.get('email')
+        password = data.get('password')
+        confirm_password = data.get('confirmPassword')
 
-        password_hash = generate_password_hash(password)
-        if check_password_hash(password_hash, password):
-            new_user = Users(
-                username = username,
-                email = email,
-                password = password_hash,
-            )
-            try:
-                new_user.save()
-                return HttpResponseRedirect(reverse('authapp:login'))
-            except Exception as e:
-                return HttpResponse(e)
-        else:
-            return HttpResponse('ERRO AQUI')
+        if not all([username, email, password, confirm_password]):
+            return JsonResponse({'error': 'Todos os campos são obrigatórios'}, status=400)
+
+        if password != confirm_password:
+            return JsonResponse({'error': 'As senhas não coincidem'}, status=400)
+
+        if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email):
+            return JsonResponse({'error': 'Email incorreto'}, status=400)
         
+        password_hash = generate_password_hash(password)
+
+        user = Users.objects.create(
+            username = username,
+            email = email,
+            password = password_hash
+        )
+
+        return JsonResponse({'success': 'Usuário criado com sucesso'}, status=201)
+
     return render(request, 'index.html')
+        

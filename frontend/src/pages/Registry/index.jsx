@@ -29,7 +29,7 @@ const Registry = () => {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      nevigate("/auth/login");
+      nevigate("/auth/signup/");
     }
   }
 
