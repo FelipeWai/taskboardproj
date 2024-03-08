@@ -1,6 +1,7 @@
 from django.shortcuts import render
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, JsonResponse
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
 import json
@@ -15,8 +16,27 @@ def get_csrf_token(request):
 
 def login(request):
     if request.method == 'POST':
-        return HttpResponse('POST NO LOGIN')
-    return HttpResponse('GET NO LOGIN')
+        data = json.loads(request.body)
+        email = data.get('email')
+        password = data.get('password')
+
+        try:
+            user_queryset = Users.objects.get(email=email)
+            if check_password_hash(user_queryset.password, password):
+                user = authenticate(request, email=email, password=password)
+                if user is not None:
+                    login(request, user)
+                    return JsonResponse({'success': 'Login was a success'}, status=200)
+                else:
+                    return JsonResponse({'error': "Authentication failed. Please try again."}, status=401)
+            else:
+                return JsonResponse({'error': "Wrong password"}, status=401)
+        except Users.DoesNotExist:
+            return JsonResponse({'error': "User doesn't exists"}, status=404)
+
+    return render(request, 'index.html')
+
+
 
 def signup(request):
     if request.method == 'POST':
