@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from werkzeug.security import generate_password_hash
+from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
 import json
 import re
