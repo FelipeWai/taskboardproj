@@ -3,36 +3,80 @@ import { useNavigate } from "react-router-dom";
 import { Container, LinksWrapper, LoginForm } from "./styles";
 import caneta from "../../assets/Edit_duotone.svg";
 import Header from "../../components/Header";
+import Loader from "../../components/Loader";
 import { Link } from "react-router-dom";
-import Validation from "./Validation"
+import Validation from "./Validation";
 
 const Login = () => {
-
-  const nevigate = useNavigate();
+  const navigate = useNavigate();
 
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
 
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({});
 
-  function handleInput(event){
-    const newObj = {...values, [event.target.name]: event.target.value}
-    setValues(newObj)
+  function handleInput(event) {
+    const newObj = { ...values, [event.target.name]: event.target.value };
+    setValues(newObj);
   }
 
-  function handleValidation(event){
+  const [isLoading, setIsLoading] = useState(false);
+  function handleValidation(event) {
     event.preventDefault();
-  
+    setIsLoading(true);
+
     const validationErrors = Validation(values);
     setErrors(validationErrors);
-  
+
     if (Object.keys(validationErrors).length === 0) {
-      nevigate("/");
+      fetch("/auth/gettoken", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Erro ao obter token");
+          }
+        })
+        .then((data) => {
+          const csrfToken = data.csrfToken;
+
+          fetch("/auth/login/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrfToken,
+            },
+            body: JSON.stringify(values),
+          })
+            .then((response) => {
+              if (response.ok) {
+                navigate("/tasks");
+              } else {
+                setIsEmailDuplicate(true);
+                throw new Error("Error ao logar na conta");
+              }
+            })
+            .catch((error) => {
+              console.error("Erro ao logar na conta:", error);
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
+        })
+        .catch((error) => {
+          console.error("Erro ao obter token:", error);
+        });
+    } else {
+      setIsLoading(false);
     }
   }
-
 
   return (
     <Container>
@@ -50,14 +94,24 @@ const Login = () => {
         </div>
 
         <form onSubmit={handleValidation} method="POST">
-        <label>E-mail</label>
-        <input type="email" name="email" onChange={handleInput}  autoComplete="email"/>
+          <label>E-mail</label>
+          <input
+            type="email"
+            name="email"
+            onChange={handleInput}
+            autoComplete="email"
+          />
           {errors.email && <span>{errors.email}</span>}
 
           <label>Senha</label>
-          <input type="password" name="password" onChange={handleInput} autoComplete="current-password"/>
+          <input
+            type="password"
+            name="password"
+            onChange={handleInput}
+            autoComplete="current-password"
+          />
           {errors.password && <span>{errors.password}</span>}
-          <button type="submit">LOGAR</button>
+          <button type="submit">{isLoading ? <Loader /> : "LOGAR"}</button>
         </form>
 
         <LinksWrapper>

@@ -49,6 +49,10 @@ export const LoginForm = styled.main`
 
     button{
       width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-content: center;
       border: none;
       background-color: #2383E2;
       font-weight: 500;

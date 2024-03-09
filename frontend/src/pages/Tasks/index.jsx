@@ -33,7 +33,7 @@ const Tasks = () => {
           statusImg={task.statusImg}
         />
       ))}
-      <AddTask onAdd={handleAddTask}/>
+      <AddTask onAdd={handleAddTask} newTask={tasks}/>
       
     </Container>
   );
