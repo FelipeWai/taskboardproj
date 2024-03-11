@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.middleware.csrf import get_token
@@ -28,11 +27,13 @@ def login_view(request):
                 login(request, user)
                 return JsonResponse({'success': 'Login was a success'}, status=200)
             else:
-                return JsonResponse({'error': "Email or password wrong"}, status=401)
+                return JsonResponse({'error': "Invalid Credentials"}, status=401)
         except User.DoesNotExist:
-            return JsonResponse({'error': "Email or password wrong"}, status=404)
+            return JsonResponse({'error': "Invalid Credentials"}, status=404)
 
     return render(request, 'index.html')
+
+
 
 def logout_view(request):
     logout(request)

@@ -114,8 +114,8 @@ class LoginTestCase(TestCase):
         }
 
         response = self.client.post('/auth/login/', json.dumps(data), content_type='application/json')
-        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'success': 'Login was a success'})
+        self.assertEqual(response.status_code, 200)
 
     def test_login_wrong_password(self):
         data = {
@@ -125,7 +125,7 @@ class LoginTestCase(TestCase):
 
         response = self.client.post('/auth/login/', json.dumps(data), content_type='application/json')
         self.assertEqual(response.status_code, 401)
-        self.assertEqual(response.json(), {'error': "Email or password wrong"})
+        self.assertEqual(response.json(), {'error': 'Invalid Credentials'})
 
     def test_login_wrong_email(self):
         data = {
@@ -134,7 +134,7 @@ class LoginTestCase(TestCase):
         }
         response = self.client.post('/auth/login/', json.dumps(data), content_type='application/json')
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {'error': "Email or password wrong"})
+        self.assertEqual(response.json(), {'error': 'Invalid Credentials'})
 
     def test_login_no_email(self):
         data = {
@@ -153,6 +153,19 @@ class LoginTestCase(TestCase):
         response = self.client.post('/auth/login/', json.dumps(data), content_type='application/json')
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {'error': 'Todos os campos são obrigatórios'})
+
+
+    def test_session_after_login(self):
+        data = {
+            'email': 'felipe@gmail.com',
+            'password': 'FelipeWai0132?'
+        }
+        response = self.client.post('/auth/login/', json.dumps(data), content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get('/tasks/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.client.session)
+
 
 
 class LogoutTest(TestCase):
