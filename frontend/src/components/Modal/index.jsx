@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container } from "./styles";
 import { forwardRef, useImperativeHandle } from "react";
 import { createPortal } from "react-dom";
@@ -19,14 +19,15 @@ import Input from "../Input";
 import Status from "../Status";
 import Icons from "../Icons";
 
-const Modal = forwardRef(({ children, onAdd }, ref) => {
+const Modal = forwardRef(({ children, onAdd, onUpdate }, ref) => {
   const dialog = useRef();
-
   const title = useRef();
   const description = useRef();
+  // const [newSelectedIcon, setNewSelectedIcon] = useState(null);
+  // const [newSelectedStatus, setNewSelectedStatus] = useState(null);
 
-  const [newSelectedIcon, setNewSelectedIcon] = useState(null);
-  const [newSelectedStatus, setNewSelectedStatus] = useState(null);
+  const [newSelectedIcon, setNewSelectedIcon] = useState({ name: "defaultIconName", path: "defaultIconPath" });
+  const [newSelectedStatus, setNewSelectedStatus] = useState({ name: "defaultStatusName", path: "defaultStatusPath" });
 
   function handleSave() {
     const entradaTitle = title.current.value;
@@ -43,17 +44,18 @@ const Modal = forwardRef(({ children, onAdd }, ref) => {
     }
 
     onAdd({
+      id: Math.floor(Math.random() * 101),
       title: entradaTitle,
       description: entradaDescricao,
       status: newSelectedStatus.name,
       statusImg: newSelectedStatus.path,
       icon: newSelectedIcon.path,
     });
+
     title.current.value = "";
     description.current.value = "";
     setSelectedIcon(null);
     setActiveIndex(null);
-
     dialog.current.close();
   }
 
@@ -65,19 +67,27 @@ const Modal = forwardRef(({ children, onAdd }, ref) => {
       close() {
         dialog.current.close();
       },
+      openWithTask(task) {
+        const { title: taskTitle, description: taskDescription, icon, status } = task;
+        title.current.value = taskTitle;
+        description.current.value = taskDescription;
+        setNewSelectedIcon({ name: icon, path: icon });
+        setNewSelectedStatus({ name: status, path: status });
+    
+        setSelectedIcon({ name: icon, path: icon }); 
+        setActiveIndex({ name: status, path: status });
+        dialog.current.showModal();
+    }    
     };
   });
 
   const [selectedIcon, setSelectedIcon] = useState(null);
 
   const handleIconClick = (iconName, iconPath) => {
-    setSelectedIcon((prevIcon) => {
-      const newSelectedIcon =
-        prevIcon === iconName ? null : { name: iconName, path: iconPath };
-      setNewSelectedIcon(newSelectedIcon);
-      return newSelectedIcon;
-    });
-  };
+    setSelectedIcon({ name: iconName, path: iconPath });
+    setNewSelectedIcon({ name: iconName, path: iconPath });
+};
+
 
   const [activeIndex, setActiveIndex] = useState(null);
 
