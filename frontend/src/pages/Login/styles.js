@@ -11,6 +11,7 @@ export const LoginForm = styled.main`
   border: 1px solid black;
   border-radius: .5rem;
   padding: 3rem;
+  z-index: -1;
   > div {
     display: flex;
     flex-direction: column;
@@ -18,12 +19,21 @@ export const LoginForm = styled.main`
     margin-bottom: 2rem;
     align-items: center;
     justify-content: center;
+    p{
+      line-height: 1.2;
+      color: black;
+    }
     >div{
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
     margin-bottom: 1rem;
+    h2{
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: black;
+    }
     }
   }
 
@@ -88,5 +98,6 @@ export const LinksWrapper = styled.div`
 margin-top: 2rem;
   a{
     color: #27272A;
+    text-decoration: underline;
   }
 `

@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, CreateAccountForm } from "./styles";
 import Header from "../../components/Header";
-import Loader from "../../components/Loader"
+import Loader from "../../components/Loader";
 import caneta from "../../assets/Edit_duotone.svg";
 import Validation from "./Validation";
 
+import { ChakraProvider, useToast } from "@chakra-ui/react";
+
 const Registry = () => {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [values, setValues] = useState({
     username: "",
@@ -25,6 +28,7 @@ const Registry = () => {
 
   const [isEmailDuplicate, setIsEmailDuplicate] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   function handleValidation(event) {
     event.preventDefault();
     setIsLoading(true);
@@ -59,8 +63,21 @@ const Registry = () => {
           })
             .then((response) => {
               if (response.ok) {
+                toast({
+                  title: 'Account created.',
+                  description: "We've created your account for you.",
+                  status: 'success',
+                  duration: 9000,
+                  isClosable: true,
+                })
                 navigate("/auth/login");
               } else {
+                toast ({
+                  title: `Erro ao criar conta 😔.`,
+                  position: 'top-right',
+                  status:'error',
+                  isClosable: true,
+                })
                 setIsEmailDuplicate(true);
                 throw new Error("Erro ao criar conta");
               }
@@ -75,68 +92,71 @@ const Registry = () => {
         .catch((error) => {
           console.error("Erro ao obter token:", error);
         });
-    }
-    else {
-      setIsLoading(false); 
+    } else {
+      setIsLoading(false);
     }
   }
 
   return (
-    <Container>
-      <Header btnHeader="Login" link="/auth/login" />
-      <CreateAccountForm>
-        <div>
+    <ChakraProvider>
+      <Container>
+        <Header btnHeader="Login" link="/auth/login" />
+        <CreateAccountForm>
           <div>
-            <h2>Criar uma conta</h2>
-            <img src={caneta} alt="Ilustração de uma caneta preta" />
+            <div>
+              <h2>Criar uma conta</h2>
+              <img src={caneta} alt="Ilustração de uma caneta preta" />
+            </div>
+            <p>
+              Registre-se para acessar as funcionalidades do Task Board e
+              otimize sua produtividade!
+            </p>
           </div>
-          <p>
-            Registre-se para acessar as funcionalidades do Task Board e otimize
-            sua produtividade!
-          </p>
-        </div>
 
-        <form onSubmit={handleValidation} method="POST">
-          <label>Username</label>
-          <input
-            type="text"
-            name="username"
-            onChange={handleInput}
-            autoComplete="username"
-          />
-          {errors.username && <span>{errors.username}</span>}
+          <form onSubmit={handleValidation} method="POST">
+            <label>Username</label>
+            <input
+              type="text"
+              name="username"
+              onChange={handleInput}
+              autoComplete="username"
+            />
+            {errors.username && <span>{errors.username}</span>}
 
-          <label>E-mail</label>
-          <input
-            type="email"
-            name="email"
-            onChange={handleInput}
-            autoComplete="email"
-            className={isEmailDuplicate ? "duplicate-email" : ""}
-          />
-          {errors.email && <span>{errors.email}</span>}
+            <label>E-mail</label>
+            <input
+              type="email"
+              name="email"
+              onChange={handleInput}
+              autoComplete="email"
+              className={isEmailDuplicate ? "duplicate-email" : ""}
+            />
+            {errors.email && <span>{errors.email}</span>}
 
-          <label>Senha</label>
-          <input
-            type="password"
-            name="password"
-            onChange={handleInput}
-            autoComplete="current-password"
-          />
-          {errors.password && <span>{errors.password}</span>}
+            <label>Senha</label>
+            <input
+              type="password"
+              name="password"
+              onChange={handleInput}
+              autoComplete="current-password"
+            />
+            {errors.password && <span>{errors.password}</span>}
 
-          <label>Confirmar senha</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            onChange={handleInput}
-            autoComplete="current-password"
-          />
-          {errors.confirmPassword && <span>{errors.confirmPassword}</span>}
-          <button type="submit" disabled={isLoading}>{isLoading ? <Loader/> : "CRIAR CONTA"}</button>
-        </form>
-      </CreateAccountForm>
-    </Container>
+            <label>Confirmar senha</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              onChange={handleInput}
+              autoComplete="current-password"
+            />
+            {errors.confirmPassword && <span>{errors.confirmPassword}</span>}
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? <Loader /> : "CRIAR CONTA"}
+            </button>
+          </form>
+        </CreateAccountForm>
+      </Container>
+     </ChakraProvider> 
   );
 };
 

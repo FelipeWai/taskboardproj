@@ -5,7 +5,7 @@ import Modal from "../Modal";
 import add from "../../assets/Add_round_duotone.svg";
 import close from "../../assets/close_ring_duotone-1.svg";
 
-const AddTask = ({ onAdd }) => {
+const AddTask = ({ onAdd, save }) => {
   const modal = useRef();
 
   function OpenAddTask() {
@@ -18,7 +18,7 @@ const AddTask = ({ onAdd }) => {
 
   return (
     <>
-      <Modal ref={modal} onAdd={onAdd}>
+      <Modal ref={modal} onAdd={onAdd} save={save}>
         <div>
           <h4>Task details</h4>
           <button onClick={handleCloseModal}>

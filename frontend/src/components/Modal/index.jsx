@@ -19,17 +19,24 @@ import Input from "../Input";
 import Status from "../Status";
 import Icons from "../Icons";
 
-const Modal = forwardRef(({ children, onAdd, onUpdate }, ref) => {
+const Modal = forwardRef(({ children, onAdd, onUpdate, save }, ref) => {
   const dialog = useRef();
   const title = useRef();
   const description = useRef();
   // const [newSelectedIcon, setNewSelectedIcon] = useState(null);
   // const [newSelectedStatus, setNewSelectedStatus] = useState(null);
 
-  const [newSelectedIcon, setNewSelectedIcon] = useState({ name: "defaultIconName", path: "defaultIconPath" });
-  const [newSelectedStatus, setNewSelectedStatus] = useState({ name: "defaultStatusName", path: "defaultStatusPath" });
+  const [newSelectedIcon, setNewSelectedIcon] = useState({
+    name: "defaultIconName",
+    path: "defaultIconPath",
+  });
+  const [newSelectedStatus, setNewSelectedStatus] = useState({
+    name: "defaultStatusName",
+    path: "defaultStatusPath",
+  });
 
-  function handleSave() {
+  function handleSave(event) {
+    event.preventDefault();
     const entradaTitle = title.current.value;
     const entradaDescricao = description.current.value;
 
@@ -43,6 +50,15 @@ const Modal = forwardRef(({ children, onAdd, onUpdate }, ref) => {
       return;
     }
 
+    const data = {
+      id: Math.floor(Math.random() * 101),
+      title: entradaTitle,
+      description: entradaDescricao,
+      status: newSelectedStatus.name,
+      statusImg: newSelectedStatus.path,
+      icon: newSelectedIcon.path,
+    };
+
     onAdd({
       id: Math.floor(Math.random() * 101),
       title: entradaTitle,
@@ -51,6 +67,33 @@ const Modal = forwardRef(({ children, onAdd, onUpdate }, ref) => {
       statusImg: newSelectedStatus.path,
       icon: newSelectedIcon.path,
     });
+
+    fetch("url", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Deu errado");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Task foi adicionada:", data);
+        title.current.value = "";
+        description.current.value = "";
+        setSelectedIcon(null);
+        setActiveIndex(null);
+        save= true
+        dialog.current.close();
+      })
+      .catch((error) => {
+        console.error("Error adding task:", error);
+        alert("Erro ao adicionar task!")
+      });
 
     title.current.value = "";
     description.current.value = "";
@@ -68,16 +111,21 @@ const Modal = forwardRef(({ children, onAdd, onUpdate }, ref) => {
         dialog.current.close();
       },
       openWithTask(task) {
-        const { title: taskTitle, description: taskDescription, icon, status } = task;
+        const {
+          title: taskTitle,
+          description: taskDescription,
+          icon,
+          status,
+        } = task;
         title.current.value = taskTitle;
         description.current.value = taskDescription;
         setNewSelectedIcon({ name: icon, path: icon });
         setNewSelectedStatus({ name: status, path: status });
-    
-        setSelectedIcon({ name: icon, path: icon }); 
+
+        setSelectedIcon({ name: icon, path: icon });
         setActiveIndex({ name: status, path: status });
         dialog.current.showModal();
-    }    
+      },
     };
   });
 
@@ -86,8 +134,7 @@ const Modal = forwardRef(({ children, onAdd, onUpdate }, ref) => {
   const handleIconClick = (iconName, iconPath) => {
     setSelectedIcon({ name: iconName, path: iconPath });
     setNewSelectedIcon({ name: iconName, path: iconPath });
-};
-
+  };
 
   const [activeIndex, setActiveIndex] = useState(null);
 
@@ -180,7 +227,7 @@ const Modal = forwardRef(({ children, onAdd, onUpdate }, ref) => {
           Delete
           <Trash2 />
         </button>
-        <button className="btnSave" onClick={handleSave}>
+        <button type="submit" className="btnSave" onClick={handleSave}>
           Save
           <Check />
         </button>

@@ -25,6 +25,11 @@ export const Container = styled.button`
     height: 2.4rem;
   }
   }
+  h3{
+    color: black;
+    font-weight: bold;
+    font-size: 1.56rem;
+  }
   
   @media(max-width:770px){
     width: 80%;

@@ -6,9 +6,11 @@ import Header from "../../components/Header";
 import Loader from "../../components/Loader";
 import { Link } from "react-router-dom";
 import Validation from "./Validation";
+import { ChakraProvider, useToast } from "@chakra-ui/react";
 
 const Login = () => {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [values, setValues] = useState({
     email: "",
@@ -59,7 +61,12 @@ const Login = () => {
               if (response.ok) {
                 navigate("/tasks");
               } else {
-                setIsEmailDuplicate(true);
+                toast({
+                  title: `Erro ao logar`,
+                  position: 'top-right',
+                  status:'error',
+                  isClosable: true,
+                })
                 throw new Error("Error ao logar na conta");
               }
             })
@@ -79,6 +86,7 @@ const Login = () => {
   }
 
   return (
+    <ChakraProvider>
     <Container>
       <Header btnHeader="GitHub" link="/" />
       <LoginForm>
@@ -121,6 +129,7 @@ const Login = () => {
         </LinksWrapper>
       </LoginForm>
     </Container>
+    </ChakraProvider> 
   );
 };
 

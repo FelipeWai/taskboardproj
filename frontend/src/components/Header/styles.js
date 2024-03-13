@@ -9,6 +9,7 @@ export const Container = styled.header`
   background-color: white;
   padding: 3rem;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
 
   .logo {
     display: flex;
@@ -19,6 +20,8 @@ export const Container = styled.header`
 
     h2 {
       color: black;
+      font-size: 2.4rem;
+      font-weight: 700;
     }
 
     &:hover {
