@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Container } from "./styles";
 import AddTask from "../../components/AddTask";
 import logo from "../../assets/Logo.svg";
 import edit from "../../assets/Edit_duotone.svg";
 import NewTask from "../../components/NewTask";
+
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -31,10 +32,11 @@ const Tasks = () => {
           status={task.status}
           icon={task.icon}
           statusImg={task.statusImg}
+          taskInfo={task}
         />
       ))}
-      <AddTask onAdd={handleAddTask} newTask={tasks}/>
-      
+
+      <AddTask onAdd={handleAddTask} />
     </Container>
   );
 };
