@@ -18,3 +18,10 @@ class User(AbstractUser):
     
     groups = models.ManyToManyField(Group, related_name='custom_user_groups')
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions')
+
+    def seralize(self):
+        return {
+            "id": self.id,
+            "email": self.email,
+            "username": self.username,
+        }
