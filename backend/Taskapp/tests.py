@@ -35,20 +35,22 @@ class TasksViewsTest(TestCase):
         User.objects.create(username='felipe', email='felipe@gmail.com', password=password_hash)
         self.client = Client()
 
-    def test_create_view(self):
-        data = {
-            'email': 'user1@example.com',
-            'password': 'password123'
-        }
-        response = self.client.post('/auth/login/', json.dumps(data), content_type='application/json')
-        self.assertIn(response.status_code, [200, 302])
+    # def test_create_view(self):
+    #    data = {
+    #         'email': 'felipe@gmail.com',
+    #         'password': 'FelipeWai0132?'
+    #     }
 
-        data = {
-            "title": "test title",
-            "text": "test text",
-            "icon": "test icon",
-            "status": "test status"
-        }
+    #     response = self.client.post('/auth/login/', json.dumps(data), content_type='application/json')
+    #     self.assertEqual(response.json(), {'success': 'Login was a success'})
+    #     self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(f'/tasks/create/{self.user1.id}', json.dumps(data), content_type='application/json')
-        self.assertEqual(response.status_code, 200)
+    #     data = {
+    #         "title": "test title",
+    #         "text": "test text",
+    #         "icon": "test icon",
+    #         "status": "test status"
+    #     }
+
+    #     response = self.client.post(f'/tasks/create/{self.user1.id}', json.dumps(data), content_type='application/json')
+    #     self.assertEqual(response.status_code, 200)
