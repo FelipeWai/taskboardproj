@@ -11,14 +11,21 @@ export const Container = styled.div`
   .wrapper {
     display: flex;
     align-items: start;
-    gap: 3rem;
+    gap: 2.5rem;
     margin-bottom: 4rem;
 
     .titleWrapper {
       display: flex;
       flex-direction: column;
-      align-items: start;
-      gap: 1rem;
+      align-items: center;
+      h1{
+        font-size: 3.2rem;
+        color: black;
+        font-weight: bold;
+      }
+      .descriptionSpan{
+        margin-bottom: 1rem;
+      }
     }
     
   }

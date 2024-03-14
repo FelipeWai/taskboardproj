@@ -64,16 +64,19 @@ const Registry = () => {
             .then((response) => {
               if (response.ok) {
                 toast({
-                  title: 'Account created.',
-                  description: "We've created your account for you.",
+                  title: 'Conta criada.',
+                  description: "Sua conta foi criada com sucesso!",
                   status: 'success',
                   duration: 9000,
                   isClosable: true,
                 })
-                navigate("/auth/login");
+                setTimeout(() => {
+                  navigate("/auth/login");
+                }, 4000);
               } else {
                 toast ({
-                  title: `Erro ao criar conta 😔.`,
+                  title: `Erro ao criar conta.`,
+                  description: "Ops! Algo inesperado aconteceu.",
                   position: 'top-right',
                   status:'error',
                   isClosable: true,

@@ -63,6 +63,9 @@ export const TaskDetails = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
+  h3{
+    font-weight: bold;
+  }
 
   > div {
     display: flex;

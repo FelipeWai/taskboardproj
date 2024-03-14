@@ -73,9 +73,8 @@ export const Container = styled.dialog`
   // Modal
   form {
     display: flex;
-    position: absolute;
-    right: 0;
-    bottom: 0;
+    justify-content: end;
+    margin-top: 5rem;
 
     button {
       display: flex;
@@ -111,6 +110,11 @@ export const Container = styled.dialog`
   @media (max-width: 950px) {
     width: 50%;
   }
+  /* @media(max-height:750px){
+    form{
+
+    }
+  } */
   @media (max-width: 740px) {
     width: 100%;
     height: 90%;
@@ -121,7 +125,6 @@ export const Container = styled.dialog`
     form {
       justify-content: center;
       align-items: center;
-      left: 0;
       gap: 1.5rem;
 
       button {
