@@ -45,3 +45,4 @@ def task_creation(request, user_id):
 
     else:
         return JsonResponse({'error': 'method not allowed'}, status=405)
+

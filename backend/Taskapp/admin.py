@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Tasks
+
+class AdminSiteTasks(admin.ModelAdmin):
+    list_display = ("id", "user_id", "title", "status")
+
+
+
+admin.site.register(Tasks)

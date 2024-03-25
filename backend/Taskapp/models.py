@@ -1,9 +1,10 @@
 from django.db import models
-from Authapp.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # Create your models here.
 class Tasks(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='task_owner')
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='task')
     title = models.CharField(max_length=20)
     text = models.TextField(max_length=600)
     icon = models.CharField(max_length=20)

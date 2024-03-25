@@ -27,30 +27,32 @@ class TasksTest(TestCase):
         self.assertEqual(str(task1), "t1")
     
 
-from django.contrib.auth.hashers import make_password
+# from django.contrib.auth.hashers import make_password
 
-class TasksViewsTest(TestCase):
-    def setUp(self):
-        password_hash = make_password('FelipeWai0132?')
-        User.objects.create(username='felipe', email='felipe@gmail.com', password=password_hash)
-        self.client = Client()
+# class TaskCreationViewTest(TestCase):
+#     def setUp(self):
+#         self.client = Client()
+#         hashed_password = make_password('password123')
+#         self.user = User.objects.create(username='testuser', email='test@example.com', password=hashed_password)
 
-    # def test_create_view(self):
-    #    data = {
-    #         'email': 'felipe@gmail.com',
-    #         'password': 'FelipeWai0132?'
-    #     }
+#     def test_task_creation(self):
+#         url_login = reverse('authapp:login')
+#         login_data = {
+#             'email': 'test@example.com',
+#             'password': 'password123'
+#         }
+#         response = self.client.post(url_login, login_data, content_type='application/json')
+#         self.assertEqual(response.json(), {'success': 'Login was a success'})
+#         self.assertEqual(response.status_code, 200)
 
-    #     response = self.client.post('/auth/login/', json.dumps(data), content_type='application/json')
-    #     self.assertEqual(response.json(), {'success': 'Login was a success'})
-    #     self.assertEqual(response.status_code, 200)
 
-    #     data = {
-    #         "title": "test title",
-    #         "text": "test text",
-    #         "icon": "test icon",
-    #         "status": "test status"
-    #     }
-
-    #     response = self.client.post(f'/tasks/create/{self.user1.id}', json.dumps(data), content_type='application/json')
-    #     self.assertEqual(response.status_code, 200)
+#         url = reverse('taskapp:taskscreation', kwargs={'user_id': self.user.id})
+#         data = {
+#             'title': 'New Task',
+#             'text': 'This is a test task',
+#             'icon': 'test-icon',
+#             'status': 'pending'
+#         }
+#         response = self.client.post(url, data, format='application/json')
+#         self.assertEqual(response.status_code, 200)
+#         self.assertEqual(Tasks.objects.count(), 1)
