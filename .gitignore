@@ -1,2 +1,3 @@
 backend/main/database.py
 backend/env
+backend/main/settings.py
